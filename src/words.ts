@@ -22,7 +22,7 @@ export class WordResult {
     } 
 }
 
-const Filename: string = './../assets/words_alpha.txt';
+const Filename: string = './assets/words_alpha.txt';
 
 export class Word {
     private _wasted: number = 0;
@@ -67,4 +67,5 @@ export class Word {
     public async getAsync(index: number): Promise<WordResult> {
         return await this.get(index);
     }
+
 }

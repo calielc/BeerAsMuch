@@ -1,8 +1,8 @@
 import * as Words from "./words"
 
-class Sample1 {
+class SampleSync {
     public static main(): void {
-        function outputFunc(result: Words.WordResult): void {
+        function writeConsole(result: Words.WordResult): void {
             console.log("wasted: " + result.Wasted + ", words[" + result.Index + "] = " + result.Word);
         };
             
@@ -10,13 +10,13 @@ class Sample1 {
         console.log("Wasted: " + words.Wasted);
         
         var promises = new Array();
-        promises.push(words.get(-1).then(outputFunc));
-        promises.push(words.get(0).then(outputFunc));
-        promises.push(words.get(500).then(outputFunc));
-        promises.push(words.get(19675).then(outputFunc));
-        promises.push(words.get(32767).then(outputFunc));
-        promises.push(words.get(65535).then(outputFunc));
-        promises.push(words.get(20457600000000000).then(outputFunc));
+        promises.push(words.get(-1).then(writeConsole));
+        promises.push(words.get(0).then(writeConsole));
+        promises.push(words.get(500).then(writeConsole));
+        promises.push(words.get(19675).then(writeConsole));
+        promises.push(words.get(32767).then(writeConsole));
+        promises.push(words.get(65535).then(writeConsole));
+        promises.push(words.get(20457600000000000).then(writeConsole));
         
         Promise.all(promises).then(_ => {
             console.log("Wasted: " + words.Wasted);
@@ -24,4 +24,4 @@ class Sample1 {
     }
 }
 
-Sample1.main();
+SampleSync.main();
