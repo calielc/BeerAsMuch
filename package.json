@@ -1,0 +1,20 @@
+{
+  "name": "beer_as_much_as_possible",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/sample",
+  "types": "src/sample1",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Waes Coding Dojo",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^9.6.5",
+    "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "ts-node": "^5.0.1"
+  }
+}
