@@ -9,11 +9,11 @@ class SavingBeer {
     }
 
     public async execute(verbose: boolean = false): Promise<number> {
-        const Bucket = 99999;
+        const Jump = 99999;
 
-        var minIndex: number = 0;
-        var maxIndex: number | null = null;
-        var index = Bucket;
+        let minIndex: number = 0;
+        let maxIndex: number | null = null;
+        let index = Jump;
 
         function writeLog(text: string) {
             console.log(text);
@@ -27,7 +27,7 @@ class SavingBeer {
         writeLog("trying to find " + this._word);
         try {
             do {
-                var result = await this._wordsCollection.getAsync(index);
+                let result = await this._wordsCollection.getAsync(index);
                 writeDebug(this._wordsCollection.Wasted + " => min: " + minIndex + ", max: " +  maxIndex + ", [" + index + "] = " + result.Word);
 
                 if (result.Word == null) {
@@ -38,7 +38,7 @@ class SavingBeer {
                     continue;
                 }
 
-                var foundWord = result.Word.toUpperCase(); 
+                let foundWord = result.Word.toUpperCase(); 
                 
                 if (this._word < foundWord) {
                     writeDebug("\tBefore");
@@ -53,7 +53,7 @@ class SavingBeer {
 
                     minIndex = index + 1;
                     if (maxIndex == null) {
-                        index = minIndex + Bucket;
+                        index = minIndex + Jump;
                     }
                     else {
                         index = Math.round((minIndex + maxIndex) / 2);
@@ -78,7 +78,7 @@ class SavingBeer {
     }
 
     public static async runTestes(verbose: boolean) {
-        var words = ["a", "lupus", "house", "trash", "trasher", "zyzzyvas", "zz"];
+        let words = ["a", "lupus", "house", "trash", "trasher", "zyzzyvas", "zz"];
 
         for (let index = 0; index < words.length; index++) {
             const word = words[index];
