@@ -2,11 +2,11 @@ import * as Words from "./words"
 
 class SampleAsync {
     public static async main() {
-        function writeConsole(result: Words.WordResult): void {
+        function writeConsole(result: Words.WordAtIndex): void {
             console.log("wasted: " + result.Wasted + ", words[" + result.Index + "] = " + result.Word);
         };
 
-        let words = new Words.Word();
+        let words = new Words.WordsCollection();
         console.log("Wasted: " + words.Wasted);
 
         writeConsole(await words.getAsync(-1));

@@ -1,9 +1,9 @@
-export class WordResult {
-    private _index: number;
-    private _word: string | null;
-    private _wasted: number;
+export class WordAtIndex {
+    private readonly _index: number;
+    private readonly _word: string | null;
+    private readonly _wasted: number;
 
-    constructor(index: number, word: string | null, wasted: number ) {
+    constructor(index: number, word: string | null, wasted: number) {
         this._index = index;
         this._word = word;
         this._wasted = wasted;
@@ -24,18 +24,24 @@ export class WordResult {
 
 const Filename: string = './assets/words_alpha.txt';
 
-export class Word {
+export interface IWordsCollection {
+    readonly Wasted: number;
+    get(index: number): Promise<WordAtIndex>;
+    getAsync(index: number): Promise<WordAtIndex>
+}
+
+export class WordsCollection implements IWordsCollection {
     private _wasted: number = 0;
 
     public get Wasted(): number {
         return this._wasted;
     } 
 
-    public get(index: number): Promise<WordResult> {
+    public get(index: number): Promise<WordAtIndex> {
         return new Promise(resolve => {
             if (index < 0) {
                 this._wasted += 1;
-                resolve(new WordResult(index, null, this._wasted));
+                resolve(new WordAtIndex(index, null, this._wasted));
                 return;
             }
 
@@ -59,13 +65,12 @@ export class Word {
             
             rl.on('close', () => {
                 this._wasted += 1;
-                resolve(new WordResult(index, lineAtIndex, this._wasted));           
+                resolve(new WordAtIndex(index, lineAtIndex, this._wasted));           
             });
         });
     }
     
-    public async getAsync(index: number): Promise<WordResult> {
+    public async getAsync(index: number): Promise<WordAtIndex> {
         return await this.get(index);
     }
-
 }
