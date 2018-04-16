@@ -20,7 +20,7 @@ Words.prototype.get = function(index) {
         var readline = require('readline');
         var stream = require('stream');
         
-        var instream = fs.createReadStream('words_alpha.txt');
+        var instream = fs.createReadStream('./assets/words_alpha.txt');
         var outstream = new stream;
         var rl = readline.createInterface(instream, outstream);
         
