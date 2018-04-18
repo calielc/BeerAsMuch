@@ -1,11 +1,20 @@
-import * as Words from "./words"
+import * as Words from "./words";
 
 class SavingBeer {
-    private readonly _word: string;
-    private readonly _wordsCollection: Words.IWordsCollection = new Words.WordsCollection();
+    public static async runTests(verbose: boolean) {
+        const words = ["a", "lupus", "house", "trash", "trasher", "zyzzyvas", "zz"];
+
+        for (let index = 0; index < words.length; index++) {
+            const word = words[index];
+            await new SavingBeer(word).execute(verbose);
+        }
+    }
+
+    private readonly word: string;
+    private readonly wordsCollection: Words.IWordsCollection = new Words.WordsCollection();
 
     constructor(word: string) {
-        this._word = word.toUpperCase();
+        this.word = word.toUpperCase();
     }
 
     public async execute(verbose: boolean = false): Promise<number> {
@@ -24,11 +33,15 @@ class SavingBeer {
             }
         }
 
-        writeLog("trying to find " + this._word);
+        writeLog("trying to find " + this.word);
         try {
             do {
-                let result = await this._wordsCollection.getAsync(index);
-                writeDebug(this._wordsCollection.Wasted + " => min: " + minIndex + ", max: " +  maxIndex + ", [" + index + "] = " + result.Word);
+                const result = await this.wordsCollection.get(index);
+                writeDebug(
+                    this.wordsCollection.Wasted +
+                    " => min: " + minIndex +
+                    ", max: " +  maxIndex +
+                    ", [" + index + "] = " + result.Word);
 
                 if (result.Word == null) {
                     writeDebug("\tFar Away");
@@ -38,17 +51,17 @@ class SavingBeer {
                     continue;
                 }
 
-                let foundWord = result.Word.toUpperCase(); 
-                
-                if (this._word < foundWord) {
+                const foundWord = result.Word.toUpperCase();
+
+                if (this.word < foundWord) {
                     writeDebug("\tBefore");
 
                     maxIndex = index - 1;
                     index = Math.round((minIndex + maxIndex) / 2);
                     continue;
                 }
-                
-                if (this._word > foundWord) {
+
+                if (this.word > foundWord) {
                     writeDebug("\tAfter");
 
                     minIndex = index + 1;
@@ -62,30 +75,20 @@ class SavingBeer {
                 }
 
                 writeLog("\tBingo");
-                return this._wordsCollection.Wasted;
-            } 
-            while (maxIndex == null || maxIndex >= minIndex)
+                return this.wordsCollection.Wasted;
+            }
+            while (maxIndex == null || maxIndex >= minIndex);
 
-            writeDebug(this._wordsCollection.Wasted + " => min: " + minIndex + ", max: " +  maxIndex);
+            writeDebug(this.wordsCollection.Wasted + " => min: " + minIndex + ", max: " +  maxIndex);
             writeLog("\tNot Found");
 
-            return this._wordsCollection.Wasted;
+            return this.wordsCollection.Wasted;
         }
         finally {
-            writeLog("\t" + this._wordsCollection.Wasted + " beers was wasted")
+            writeLog("\t" + this.wordsCollection.Wasted + " beers was wasted");
             writeLog("");
-        }
-    }
-
-    public static async runTestes(verbose: boolean) {
-        let words = ["a", "lupus", "house", "trash", "trasher", "zyzzyvas", "zz"];
-
-        for (let index = 0; index < words.length; index++) {
-            const word = words[index];
-            await new SavingBeer(word).execute(verbose);
         }
     }
 }
 
-SavingBeer.runTestes(false);
-
+SavingBeer.runTests(false);

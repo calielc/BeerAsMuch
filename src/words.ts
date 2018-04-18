@@ -1,76 +1,75 @@
 export class WordAtIndex {
-    private readonly _index: number;
-    private readonly _word: string | null;
-    private readonly _wasted: number;
+    private readonly index: number;
+    private readonly word: string | null;
+    private readonly wasted: number;
 
     constructor(index: number, word: string | null, wasted: number) {
-        this._index = index;
-        this._word = word;
-        this._wasted = wasted;
+        this.index = index;
+        this.word = word;
+        this.wasted = wasted;
     }
 
     public get Index(): number {
-        return this._index;
-    } 
+        return this.index;
+    }
 
     public get Word(): string | null {
-        return this._word;
+        return this.word;
     }
 
     public get Wasted(): number {
-        return this._wasted;
-    } 
+        return this.wasted;
+    }
 }
 
-const Filename: string = './assets/words_alpha.txt';
+const Filename: string = "./assets/words_alpha.txt";
 
 export interface IWordsCollection {
     readonly Wasted: number;
     get(index: number): Promise<WordAtIndex>;
-    getAsync(index: number): Promise<WordAtIndex>
 }
 
 export class WordsCollection implements IWordsCollection {
-    private _wasted: number = 0;
+    private wasted: number = 0;
 
     public get Wasted(): number {
-        return this._wasted;
-    } 
+        return this.wasted;
+    }
 
-    public get(index: number): Promise<WordAtIndex> {
-        return new Promise(resolve => {
+    public async get(index: number): Promise<WordAtIndex> {
+        return await this.getAsync(index);
+    }
+
+    private getAsync(index: number): Promise<WordAtIndex> {
+        return new Promise((resolve) => {
             if (index < 0) {
-                this._wasted += 1;
-                resolve(new WordAtIndex(index, null, this._wasted));
+                this.wasted += 1;
+                resolve(new WordAtIndex(index, null, this.wasted));
                 return;
             }
 
-            var fs = require('fs');
-            var readline = require('readline');
-            var stream = require('stream');
-            
-            var instream = fs.createReadStream(Filename);
-            var outstream = new stream;
-            var rl = readline.createInterface(instream, outstream);
-            
-            var currentIndex: number = 0;
-            var lineAtIndex: string | null = null;
-    
-            rl.on('line', (currentLine: string | null) => {
-                if (currentIndex == index) {
+            const fs = require("fs");
+            const readline = require("readline");
+            const stream = require("stream");
+
+            const instream = fs.createReadStream(Filename);
+            const outstream = new stream();
+            const rl = readline.createInterface(instream, outstream);
+
+            let currentIndex: number = 0;
+            let lineAtIndex: string | null = null;
+
+            rl.on("line", (currentLine: string | null) => {
+                if (currentIndex === index) {
                     lineAtIndex = currentLine;
                 }
                 currentIndex += 1;
             });
-            
-            rl.on('close', () => {
-                this._wasted += 1;
-                resolve(new WordAtIndex(index, lineAtIndex, this._wasted));           
+
+            rl.on("close", () => {
+                this.wasted += 1;
+                resolve(new WordAtIndex(index, lineAtIndex, this.wasted));
             });
         });
-    }
-    
-    public async getAsync(index: number): Promise<WordAtIndex> {
-        return await this.get(index);
     }
 }

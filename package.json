@@ -5,16 +5,38 @@
   "main": "src/sample",
   "types": "src/sample1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "pretest": "npm run lint",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Waes Coding Dojo",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/node": "^9.6.5",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.3",
     "typescript": "^2.8.1"
   },
   "dependencies": {
     "ts-node": "^5.0.1"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

@@ -1,15 +1,15 @@
-import * as Words from "./words"
+import * as Words from "./words";
 
 class SampleSync {
     public static main(): void {
         function writeConsole(result: Words.WordAtIndex): void {
             console.log("wasted: " + result.Wasted + ", words[" + result.Index + "] = " + result.Word);
-        };
-            
-        let words = new Words.WordsCollection();
+        }
+
+        const words = new Words.WordsCollection();
         console.log("Wasted: " + words.Wasted);
-        
-        var promises = new Array();
+
+        const promises = new Array();
         promises.push(words.get(-1).then(writeConsole));
         promises.push(words.get(0).then(writeConsole));
         promises.push(words.get(500).then(writeConsole));
@@ -17,8 +17,8 @@ class SampleSync {
         promises.push(words.get(32767).then(writeConsole));
         promises.push(words.get(65535).then(writeConsole));
         promises.push(words.get(20457600000000000).then(writeConsole));
-        
-        Promise.all(promises).then(_ => {
+
+        Promise.all(promises).then(() => {
             console.log("Wasted: " + words.Wasted);
         });
     }
